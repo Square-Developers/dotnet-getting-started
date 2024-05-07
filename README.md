@@ -19,7 +19,6 @@
     $ cp appsettings.example.json appsettings.json
     ```
 1. Place your sandbox access token in `appsettings.json`
-
     ```json
     {
       "AppSettings": {
@@ -39,8 +38,8 @@
     $ dotnet run
     ```
 
-You should see and output similar to this in the console
-```
-location:
-  country =  US name = Default Test Account
-```
+1. You should see and output similar to this in the console
+    ```
+    location:
+      country =  US name = Default Test Account
+    ```
