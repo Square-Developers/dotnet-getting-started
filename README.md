@@ -7,25 +7,35 @@
 [.NET Quickstart guide](https://developer.squareup.com/docs/sdks/dotnet/quick-start) - The quickstart directory is based off of this document.
 
 ##  Quickstart Instructions
-Change into the `quickstart` directory
+1. Change into the `quickstart` directory
 
-Copy the example settings file to `appsettings.json`
-```
-$ cp appsettings.example.json appsettings.json
-```
-Place your sandbox access token in `appsettings.json`
+1. Copy the example settings file to `appsettings.json`
+    ```
+    $ cp appsettings.example.json appsettings.json
+    ```
+1. Place your sandbox access token in `appsettings.json`
 
-```json
-{
-  "AppSettings": {
-    "AccessToken": "YOUR-SANDBOX-ACCESS-TOKEN"
-  }
-}
+    ```json
+    {
+      "AppSettings": {
+        "AccessToken": "YOUR-SANDBOX-ACCESS-TOKEN"
+      }
+    }
+    ```
 
-```
-Run the code
-```
-$ dotnet run
-```
+1. Install the package for Square
 
-You should see your `Square Sandbox Seller account's` location logged in the console.
+    ```
+    $ dotnet add package square
+    ```
+
+1. Run the code
+    ```
+    $ dotnet run
+    ```
+
+You should see and output similar to this in the console
+```
+location:
+  country =  US name = Default Test Account
+```
