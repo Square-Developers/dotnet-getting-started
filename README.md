@@ -6,6 +6,8 @@
 
 [.NET Quickstart guide](https://developer.squareup.com/docs/sdks/dotnet/quick-start) - The quickstart directory is based off of this document.
 
+[Nuget Repository for Square](https://www.nuget.org/packages/Square)
+
 ##  Quickstart Instructions
 1. Change into the `quickstart` directory
 
