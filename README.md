@@ -1,15 +1,11 @@
-# Get Started
+# Square .NET SDK Quickstart
+
+This quickstart sample creates a Square client instance with your Square access token and then lists the locations in your account.
+The sample is based on the [.NET SDK Quickstart guide](https://developer.squareup.com/docs/sdks/dotnet/quick-start).
+
+## Setup
 
 [Install .NET](https://learn.microsoft.com/en-us/dotnet/core/install/) - If you don't have dotnet already installed on your machine.
-
-[Square .NET SDK Guide](https://developer.squareup.com/docs/sdks/dotnet/using-dot-net-sdk) - details on how to use / configure the Square client.
-
-[.NET Quickstart guide](https://developer.squareup.com/docs/sdks/dotnet/quick-start) - The quickstart directory is based off of this document.
-
-[Nuget Repository for Square](https://www.nuget.org/packages/Square) - Where the package files are hosted
-
-[Dotnet SDK Source Code](https://github.com/square/square-dotnet-sdk) - Github repo with sdk source code
-
 
 ##  Quickstart Instructions
 1. Change into the `quickstart` directory
@@ -43,3 +39,11 @@
     location:
       country =  US name = Default Test Account
     ```
+
+## Resources
+
+[Square .NET SDK Guide](https://developer.squareup.com/docs/sdks/dotnet/using-dot-net-sdk) - details on how to use / configure the Square client.
+
+[Nuget Repository for Square](https://www.nuget.org/packages/Square) - Where the package files are hosted
+
+[Dotnet SDK Source Code](https://github.com/square/square-dotnet-sdk) - Github repo with sdk source code
