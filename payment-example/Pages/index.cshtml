@@ -1,0 +1,53 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Check Out";
+}
+@section Scripts {
+    <!-- link to the Web Payment SDK library -->
+    <script type="text/javascript" src="@Model.WebPaymentsSdkUrl"></script>
+    <script type="text/javascript">
+        window.applicationId = "@Model.ApplicationId";
+        window.locationId = "@Model.LocationId";
+        window.country = "@Model.Country";
+        window.currency = "@Model.Currency";
+        window.idempotencyKey = "@Model.IdempotencyKey";
+    </script>
+    <!-- link to the local Web Payment SDK initialization -->
+    <script type="text/javascript" src="~/js/sq-ach.js"></script>
+    <script type="text/javascript" src="~/js/sq-apple-pay.js"></script>
+    <script type="text/javascript" src="~/js/sq-google-pay.js"></script>
+    <script type="text/javascript" src="~/js/sq-card-pay.js"></script>
+    <script type="text/javascript" src="~/js/sq-payment-flow.js"></script>
+}
+@section Styles {
+  <!-- link to the local css style customization -->
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link rel="stylesheet" href="~/css/sq-payment.css" />
+}
+
+<form class="payment-form" id="fast-checkout">
+  <div class="wrapper">
+    <div id="apple-pay-button" alt="apple-pay" type="button"></div>
+    <div id="google-pay-button" alt="google-pay" type="button"></div>
+    <div class="border">
+      <span>OR</span>
+    </div>
+    <div id="ach-wrapper">
+      <label for="ach-account-holder-name">
+        Full Name
+      </label>
+      <input id="ach-account-holder-name" type="text" placeholder="Jane Doe" name="ach-account-holder-name" autocomplete="name" />
+      <span id="ach-message"></span>
+      <button id="ach-button" type="button">
+        Pay with Bank Account
+      </button>
+      <div class="border">
+        <span>OR</span>
+      </div>
+    </div>
+    <div id="card-container"></div>
+    <button id="card-button" type="button">Pay with Card</button>
+    <span id="payment-flow-message"></span>
+  </div>
+</form>
