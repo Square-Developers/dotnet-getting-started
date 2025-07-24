@@ -1,7 +1,5 @@
-﻿using Square;
-using Square.Models;
-using Square.Exceptions;
-using Square.Authentication;
+using Square;
+using Square.Locations;
 
 using Microsoft.Extensions.Configuration;
 
@@ -9,10 +7,10 @@ namespace ExploreLocationsAPI
 {
     public class Program
     {
-        private static ISquareClient client;
-        private static IConfigurationRoot config;
+        private static SquareClient client = null!;
+        private static IConfigurationRoot config = null!;
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var builder = new ConfigurationBuilder()
              .AddJsonFile($"appsettings.json", true, true);
@@ -20,56 +18,43 @@ namespace ExploreLocationsAPI
             config = builder.Build();
             var accessToken = config["AppSettings:AccessToken"];
 
-            client = new SquareClient.Builder()
-                .BearerAuthCredentials(
-                    new BearerAuthModel.Builder(
-                        accessToken
-                    )
-                    .Build())
-                .Environment(Square.Environment.Sandbox)
-                .Build();
+            client = new SquareClient(
+                accessToken,
+                new ClientOptions
+                {
+                    BaseUrl = SquareEnvironment.Sandbox
+                }
+            );
 
-            RetrieveLocationsAsync().Wait();
+            await RetrieveLocationsAsync();
         }
 
         static async Task RetrieveLocationsAsync()
         {
             try
             {
-                ListLocationsResponse response = await client.LocationsApi.ListLocationsAsync();
-                foreach (Location location in response.Locations)
+                var response = await client.Locations.ListAsync();
+                if (response.Locations != null)
                 {
-                    Console.WriteLine("location:\n  country =  {0} name = {1}",
-            location.Country, location.Name);
-                }
-            }
-            catch (ApiException e)
-            {
-                var errors = e.Errors;
-                var statusCode = e.ResponseCode;
-                var httpContext = e.HttpContext;
-                Console.WriteLine("ApiException occurred:");
-                Console.WriteLine("Headers:");
-                foreach (var item in httpContext.Request.Headers)
-                {
-                    //Display all the headers except Authorization
-                    if (item.Key != "Authorization")
+                    foreach (var location in response.Locations)
                     {
-                        Console.WriteLine("\t{0}: \t{1}", item.Key, item.Value);
+                        Console.WriteLine($"location: country = {location.Country} name = {location.Name}");
                     }
                 }
-                Console.WriteLine("Status Code: \t{0}", statusCode);
-                foreach (Error error in errors)
+                else
                 {
-                    Console.WriteLine("Error Category:{0} Code:{1} Detail:{2}", error.Category, error.Code, error.Detail);
+                    Console.WriteLine("No locations found.");
                 }
-
-                // Your error handling code
+            }
+            catch (SquareApiException e)
+            {
+                Console.WriteLine("SquareApiException occurred:");
+                Console.WriteLine("Status Code: {0}", e.StatusCode);
+                Console.WriteLine("Error: {0}", e.Message);
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception occurred");
-                // Your error handling code
+                Console.WriteLine($"Exception occurred: {e.Message}");
             }
         }
     }
