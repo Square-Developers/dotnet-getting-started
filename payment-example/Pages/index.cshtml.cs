@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-
-using Square;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Square.Authentication;
+using Square;
+using Square.Locations;
 
 namespace sqRazorSample.Pages
 {
@@ -21,7 +20,7 @@ namespace sqRazorSample.Pages
         public IndexModel(Microsoft.Extensions.Configuration.IConfiguration configuration)
         {
             var environment = configuration["AppSettings:Environment"] == "sandbox" ?
-                Square.Environment.Sandbox : Square.Environment.Production;
+                SquareEnvironment.Sandbox : SquareEnvironment.Production;
 
             var accessToken = configuration["AppSettings:AccessToken"];
 
@@ -34,25 +33,16 @@ namespace sqRazorSample.Pages
             // the buyer.
             IdempotencyKey = NewIdempotencyKey();
 
-            WebPaymentsSdkUrl = environment == Square.Environment.Sandbox ?
-                "https://sandbox.web.squarecdn.com/v1/square.js" : "https://web.squarecdn.com/v1/square.js" ;
+            WebPaymentsSdkUrl = environment == SquareEnvironment.Sandbox ?
+                "https://sandbox.web.squarecdn.com/v1/square.js" : "https://web.squarecdn.com/v1/square.js";
 
- 
-
-      client = new SquareClient.Builder()
-                .BearerAuthCredentials(
-                    new BearerAuthModel.Builder(
-                        accessToken
-                    )
-                    .Build())
-                .Environment(environment)
-                .Build();
+            client = new SquareClient(accessToken, new ClientOptions { BaseUrl = environment == SquareEnvironment.Sandbox ? "https://connect.squareupsandbox.com" : "https://connect.squareup.com" });
         }
 
         public async Task OnGetAsync() {
-            var result = await client.LocationsApi.RetrieveLocationAsync(locationId: this.LocationId);
-            this.Country = result.Location.Country;
-            this.Currency = result.Location.Currency;
+            var result = await client.Locations.GetAsync(new GetLocationsRequest { LocationId = this.LocationId });
+            this.Country = result.Location.Country?.ToString();
+            this.Currency = result.Location.Currency?.ToString();
         }
 
         private static string NewIdempotencyKey() {
